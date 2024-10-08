@@ -1,9 +1,9 @@
 .container {
-  display: 'flex';
   justify-content: center;
   align-items: center;
   background-color: #343434;
   border: 2px solid #565656;
+  border-radius: 5px 5px 0 0;
 }
 
 .buttonsContainer {
@@ -13,6 +13,14 @@
 
 .timeLeft {
   font-size: 3.5rem;
-  font-weight: bolder;
+  font-weight: bold;
   margin: 0.5rem 0 0.5rem 0;
+}
+
+.cyclesContainer {
+  background: #797979;
+  padding: 10px;
+  display: flex;
+  border-radius: 0 0 5px 5px;
+  justify-content: space-between;
 }
