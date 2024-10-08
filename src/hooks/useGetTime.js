@@ -1,49 +1,54 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const useGetTime = () => {
-  const initialSessionLength = 0;
+  const [timeLeft, setTimeLeft] = useState(25 * 60);
+  const [isRunning, setIsRunning] = useState(false);
+  const [isWorkSession, setIsWorkSession] = useState(true);
 
-  const [counter, setCounter] = useState(initialSessionLength);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (isRunning) {
+        setTimeLeft((prevTime) => {
+          if (prevTime <= 1) {
+            clearInterval(timer);
+            setIsRunning(false);
+            setIsWorkSession(!isWorkSession);
+            return isWorkSession ? 5 * 60 : 25 * 60;
+          }
+          return prevTime - 1;
+        });
+      }
+    }, 1000);
 
-  const cycles = [
-    [25, 5],
-    // [50, 10],
-  ];
+    return () => clearInterval(timer);
+  }, [isRunning, isWorkSession]);
 
-  const changeSessionLength = () => {
-    cycles.map((cycle) => setCounter(cycle[0]));
+  const pauseTimer = () => {
+    setIsRunning(false);
   };
 
-  const resetSessionLength = () => {
-    setCounter(initialSessionLength);
+  const resetTimer = () => {
+    setIsRunning(false);
+    setTimeLeft(isWorkSession ? 25 * 60 : 5 * 60);
   };
 
-  // const timeLeft = () => {
-  //   let totalTime = cycles[0][0] * 60;
-  //   let minutes = Math.floor(totalTime / 60);
-  //   let seconds = totalTime % 60;
+  const startTimer = () => {
+    setIsRunning(true);
+  };
 
-  //   if (seconds < 10) {
-  //     seconds = '0' + seconds;
-  //   }
-
-  //   console.log(`${minutes}:${seconds}`);
-
-  //   if (totalTime > 0) {
-  //     totalTime--;
-  //   } else {
-  //     clearInterval(interval);
-  //     console.log('¡Tiempo terminado!');
-  //   }
-  // };
-
-  // const interval = setInterval(timeLeft, 1000);
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  };
 
   return {
-    cycles,
-    counter,
-    changeSessionLength,
-    resetSessionLength,
-    // timeLeft,
+    formatTime,
+    startTimer,
+    resetTimer,
+    pauseTimer,
+    timeLeft,
+    isRunning,
+    isWorkSession,
   };
 };
