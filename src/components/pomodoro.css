@@ -1,0 +1,18 @@
+.container {
+  display: 'flex';
+  justify-content: center;
+  align-items: center;
+  background-color: #343434;
+  border: 2px solid #565656;
+}
+
+.buttonsContainer {
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.timeLeft {
+  font-size: 3.5rem;
+  font-weight: bolder;
+  margin: 0.5rem 0 0.5rem 0;
+}
