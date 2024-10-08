@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-export const useGetTime = () => {
-  const [timeLeft, setTimeLeft] = useState(25 * 60);
+export const useGetTime = (selectedCycle = 0) => {
+  const [timeLeft, setTimeLeft] = useState(selectedCycle.workTime * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [isWorkSession, setIsWorkSession] = useState(true);
 
@@ -9,19 +9,33 @@ export const useGetTime = () => {
     const timer = setInterval(() => {
       if (isRunning) {
         setTimeLeft((prevTime) => {
+          const newTime = prevTime - 1;
+
           if (prevTime <= 1) {
             clearInterval(timer);
             setIsRunning(false);
             setIsWorkSession(!isWorkSession);
-            return isWorkSession ? 5 * 60 : 25 * 60;
+            return isWorkSession
+              ? selectedCycle.breakTime * 60
+              : selectedCycle.workTime * 60;
           }
-          return prevTime - 1;
+          return newTime;
         });
       }
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isRunning, isWorkSession]);
+  }, [isRunning, isWorkSession, selectedCycle]);
+
+  useEffect(() => {
+    if (selectedCycle) {
+      setTimeLeft(
+        isWorkSession
+          ? selectedCycle.workTime * 60
+          : selectedCycle.breakTime * 60
+      );
+    }
+  }, [selectedCycle, isWorkSession]);
 
   const pauseTimer = () => {
     setIsRunning(false);
@@ -29,7 +43,9 @@ export const useGetTime = () => {
 
   const resetTimer = () => {
     setIsRunning(false);
-    setTimeLeft(isWorkSession ? 25 * 60 : 5 * 60);
+    setTimeLeft(
+      isWorkSession ? selectedCycle.workTime * 60 : selectedCycle.breakTime * 60
+    );
   };
 
   const startTimer = () => {
