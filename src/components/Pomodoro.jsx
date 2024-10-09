@@ -4,6 +4,7 @@ import { Timer } from './Timer';
 import { cycles } from './cycles/constants';
 
 import './pomodoro.css';
+import { CustomizeTimer } from './customizeTimer/CustomizeTimer';
 
 export const Pomodoro = () => {
   const [selectedCycleId, setSelectedCycleId] = useState(null);
@@ -16,10 +17,15 @@ export const Pomodoro = () => {
 
   const handleTimerPause = () => {
     setIsPaused((prev) => !prev);
+    // setIsPaused(!isPaused) ASK MAKI WHY THIS DONT WORK
+  };
+
+  const handleCustomizeTimer = () => {
+    console.log('Customize Timer');
   };
 
   return (
-    <>
+    <div className='container'>
       <h1>Pomodoro Timer</h1>
       <hr />
       <Timer
@@ -38,6 +44,7 @@ export const Pomodoro = () => {
           );
         })}
       </div>
-    </>
+      <CustomizeTimer onCustomizeTimer={handleCustomizeTimer} />
+    </div>
   );
 };

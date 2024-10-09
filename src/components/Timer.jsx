@@ -22,11 +22,9 @@ export const Timer = ({ selectedCycleId, onTimerStart, onTimerPause }) => {
   useEffect(() => {
     if (isRunning) {
       onTimerStart();
-      console.log('started');
       onTimerPause();
     } else if (!isRunning) {
       onTimerPause();
-      console.log('paused');
     }
   }, [isRunning]);
 
