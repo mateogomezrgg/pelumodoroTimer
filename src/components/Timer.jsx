@@ -1,7 +1,8 @@
+import { useEffect } from 'react';
 import { useGetTime } from '../hooks';
 import { cycles } from './cycles/constants';
 
-export const Timer = ({ selectedCycleId }) => {
+export const Timer = ({ selectedCycleId, onTimerStart, onTimerPause }) => {
   const selectedCycle = cycles.find(({ id }) => id === selectedCycleId);
   const {
     formatTime,
@@ -12,6 +13,22 @@ export const Timer = ({ selectedCycleId }) => {
     isWorkSession,
     isRunning,
   } = useGetTime(selectedCycle);
+
+  useEffect(() => {
+    pauseTimer();
+    resetTimer();
+  }, [selectedCycle]);
+
+  useEffect(() => {
+    if (isRunning) {
+      onTimerStart();
+      console.log('started');
+      onTimerPause();
+    } else if (!isRunning) {
+      onTimerPause();
+      console.log('paused');
+    }
+  }, [isRunning]);
 
   if (!selectedCycle) {
     return <h3>Select a cycle</h3>;
