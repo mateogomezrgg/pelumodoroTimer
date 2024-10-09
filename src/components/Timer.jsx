@@ -1,7 +1,7 @@
 import { useGetTime } from '../hooks';
 import { cycles } from './cycles/constants';
 
-export const Cycles = ({ selectedCycleId }) => {
+export const Timer = ({ selectedCycleId }) => {
   const selectedCycle = cycles.find(({ id }) => id === selectedCycleId);
   const {
     formatTime,
@@ -10,6 +10,7 @@ export const Cycles = ({ selectedCycleId }) => {
     startTimer,
     timeLeft,
     isWorkSession,
+    isRunning,
   } = useGetTime(selectedCycle);
 
   if (!selectedCycle) {

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
-import { Cycles } from './Cycles';
+import { Timer } from './Timer';
 import { cycles } from './cycles/constants';
+
 import './pomodoro.css';
 
 export const Pomodoro = () => {
@@ -11,7 +12,7 @@ export const Pomodoro = () => {
     <>
       <h1>Pomodoro Timer</h1>
       <hr />
-      <Cycles selectedCycleId={selectedCycleId} />
+      <Timer selectedCycleId={selectedCycleId} />
       <div className='cyclesContainer'>
         {cycles.map(({ id, workTime, breakTime }) => {
           return (
