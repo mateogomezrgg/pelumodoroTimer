@@ -1,19 +1,16 @@
 import { useEffect } from 'react';
-import { useGetTime } from '../hooks';
+import { useCountdown } from '../hooks';
 import { cycles } from './cycles/constants';
+import { formatTime } from './helpers/formatTime';
 
 export const Timer = ({ selectedCycleId, onTimerStart, onTimerPause }) => {
+  const isWorkSession = selectedCycleId % 2 === 0;
+  // TODO: VERIFY IS WORK SESSION!
+
   const selectedCycle = cycles.find(({ id }) => id === selectedCycleId);
 
-  const {
-    formatTime,
-    pauseTimer,
-    resetTimer,
-    startTimer,
-    timeLeft,
-    isWorkSession,
-    isRunning,
-  } = useGetTime(selectedCycle);
+  const { pauseTimer, resetTimer, startTimer, timeLeft, isRunning } =
+    useCountdown(selectedCycle);
 
   useEffect(() => {
     pauseTimer();
@@ -38,8 +35,8 @@ export const Timer = ({ selectedCycleId, onTimerStart, onTimerPause }) => {
       <div key={selectedCycle.id} className='sessionLengthContainer'>
         <p className='timeLeft'>{formatTime(timeLeft)}</p>
         <span>
-          Session Length: {`${selectedCycle.workTime}:00 `} & Break:
-          {` ${selectedCycle.breakTime}:00 `}
+          Session Length: {`${selectedCycle.workTime}`} & Break:
+          {` ${selectedCycle.breakTime}`}
         </span>
       </div>
 

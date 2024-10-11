@@ -1,44 +1,49 @@
-import { useReducer, useState } from 'react';
+import { useState } from 'react';
 
 import { Timer } from './Timer';
-import { cycles } from './cycles/constants';
+import { cycles as defaultCycles } from './cycles/constants';
 
 import './pomodoro.css';
 import { CustomizeTimer } from './customizeTimer/CustomizeTimer';
-import { timerReducer } from './timerReducer';
 
 export const Pomodoro = () => {
   const [selectedCycleId, setSelectedCycleId] = useState(null);
   const [runningCycleId, setRunningCycleId] = useState(null);
   const [isPaused, setIsPaused] = useState(false);
-
-  // const [state, dispatch] = useReducer(timerReducer, {});
+  const [cycles, setCycles] = useState(defaultCycles);
+  const [showModal, setShowModal] = useState(false);
 
   const handleTimerSwitch = () => {
-    // dispatch({
-    //   type: 'CHANGE_TIMER',
-    //   selectedCycleId,
-    // });
     setRunningCycleId(selectedCycleId);
   };
 
   const handleTimerPause = () => {
-    // dispatch({
-    //   type: 'PAUSE_TIMER',
-    //   id: selectedCycleId,
-    //   prev: (prev) => !prev,
-    //   isPaused,
-    // });
-
     setIsPaused((prev) => !prev);
-    // setIsPaused(!isPaused) ASK MAKI WHY THIS DONT WORK
+  };
+
+  const handleCycleSelect = (id) => {
+    setSelectedCycleId(id);
+    setIsPaused(true);
+    const isCustomCycle = cycles.length === id;
+
+    if (isCustomCycle) {
+      setShowModal(true);
+    }
   };
 
   const handleCustomizeTimer = () => {
-    // dispatch({
-    //   type: 'CUSTOMIZE_TIMER',
-    // });
-    console.log('Customize Timer');
+    setShowModal(false);
+
+    setCycles((prevCycles) => {
+      return [
+        ...prevCycles.slice(0, prevCycles.length - 1),
+        {
+          id: prevCycles.length,
+          workTime: 0,
+          breakTime: 0,
+        },
+      ];
+    });
   };
 
   return (
@@ -55,13 +60,21 @@ export const Pomodoro = () => {
           return (
             <button
               key={id}
-              onClick={() => setSelectedCycleId(id)}
+              onClick={() => handleCycleSelect(id)}
               disabled={runningCycleId && isPaused && runningCycleId !== id}
-            >{`${workTime} - ${breakTime}`}</button>
+            >
+              {workTime ? `${workTime} - ${breakTime}` : 'CUSTOM'}
+            </button>
           );
         })}
       </div>
-      <CustomizeTimer onCustomizeTimer={handleCustomizeTimer} />
+
+      {showModal && (
+        <CustomizeTimer
+          onCustomizeTimer={handleCustomizeTimer}
+          onCloseModal={() => setShowModal(false)}
+        />
+      )}
     </div>
   );
 };

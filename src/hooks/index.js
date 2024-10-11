@@ -1,2 +1,2 @@
-export * from './useGetTime';
+export * from './useCountdown';
 export * from './useForm';
