@@ -1,62 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { getTime } from '../components/helpers/getTime';
+import { timerStates } from '../components/helpers/timerStates';
+import { formatTime } from '../components/helpers/formatTime';
 
 export const useGetTime = (selectedCycle = 0) => {
   const [timeLeft, setTimeLeft] = useState(selectedCycle.workTime * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [isWorkSession, setIsWorkSession] = useState(true);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (isRunning) {
-        setTimeLeft((prevTime) => {
-          const newTime = prevTime - 1;
+  getTime(
+    isRunning,
+    setTimeLeft,
+    isWorkSession,
+    setIsRunning,
+    setIsWorkSession,
+    selectedCycle
+  );
 
-          if (prevTime <= 1) {
-            clearInterval(timer);
-            setIsRunning(false);
-            setIsWorkSession(!isWorkSession);
-            return isWorkSession
-              ? selectedCycle.breakTime * 60
-              : selectedCycle.workTime * 60;
-          }
-          return newTime;
-        });
-      }
-    }, 1000);
+  const { pauseTimer, resetTimer, startTimer } = timerStates(
+    setIsRunning,
+    setTimeLeft,
+    isWorkSession,
+    selectedCycle
+  );
 
-    return () => clearInterval(timer);
-  }, [isRunning, isWorkSession, selectedCycle]);
-
-  useEffect(() => {
-    if (selectedCycle) {
-      setTimeLeft(
-        isWorkSession
-          ? selectedCycle.workTime * 60
-          : selectedCycle.breakTime * 60
-      );
-    }
-  }, [selectedCycle, isWorkSession]);
-
-  const pauseTimer = () => {
-    setIsRunning(false);
-  };
-
-  const resetTimer = () => {
-    setIsRunning(false);
-    setTimeLeft(
-      isWorkSession ? selectedCycle.workTime * 60 : selectedCycle.breakTime * 60
-    );
-  };
-
-  const startTimer = () => {
-    setIsRunning(true);
-  };
-
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
-  };
+  formatTime(timeLeft);
 
   return {
     formatTime,

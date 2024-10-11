@@ -4,10 +4,11 @@ import { cycles } from './cycles/constants';
 
 export const Timer = ({ selectedCycleId, onTimerStart, onTimerPause }) => {
   const selectedCycle = cycles.find(({ id }) => id === selectedCycleId);
+
   const {
     formatTime,
-    resetTimer,
     pauseTimer,
+    resetTimer,
     startTimer,
     timeLeft,
     isWorkSession,

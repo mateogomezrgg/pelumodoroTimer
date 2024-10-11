@@ -1,26 +1,43 @@
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
 
 import { Timer } from './Timer';
 import { cycles } from './cycles/constants';
 
 import './pomodoro.css';
 import { CustomizeTimer } from './customizeTimer/CustomizeTimer';
+import { timerReducer } from './timerReducer';
 
 export const Pomodoro = () => {
   const [selectedCycleId, setSelectedCycleId] = useState(null);
   const [runningCycleId, setRunningCycleId] = useState(null);
   const [isPaused, setIsPaused] = useState(false);
 
+  // const [state, dispatch] = useReducer(timerReducer, {});
+
   const handleTimerSwitch = () => {
+    // dispatch({
+    //   type: 'CHANGE_TIMER',
+    //   selectedCycleId,
+    // });
     setRunningCycleId(selectedCycleId);
   };
 
   const handleTimerPause = () => {
+    // dispatch({
+    //   type: 'PAUSE_TIMER',
+    //   id: selectedCycleId,
+    //   prev: (prev) => !prev,
+    //   isPaused,
+    // });
+
     setIsPaused((prev) => !prev);
     // setIsPaused(!isPaused) ASK MAKI WHY THIS DONT WORK
   };
 
   const handleCustomizeTimer = () => {
+    // dispatch({
+    //   type: 'CUSTOMIZE_TIMER',
+    // });
     console.log('Customize Timer');
   };
 
