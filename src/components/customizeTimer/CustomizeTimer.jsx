@@ -11,9 +11,9 @@ export const CustomizeTimer = ({ onCustomizeTimer }) => {
     expectedBreakDuration: '',
   });
 
-  const onFormSubmit = (event) => {
-    event.preventDefault();
-    console.log(expectedBreakDuration, expectedSessionDuration);
+  const onFormSubmit = (e) => {
+    e.preventDefault();
+    console.log(expectedSessionDuration, expectedBreakDuration);
 
     console.log('Form submitted');
     onResetForm();

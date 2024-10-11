@@ -72,7 +72,7 @@ export const Pomodoro = () => {
       {showModal && (
         <CustomizeTimer
           onCustomizeTimer={handleCustomizeTimer}
-          onCloseModal={() => setShowModal(false)}
+          // onCloseModal={() => setShowModal(false)}
         />
       )}
     </div>

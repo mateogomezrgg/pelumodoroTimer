@@ -5,12 +5,13 @@ import { formatTime } from './helpers/formatTime';
 
 export const Timer = ({ selectedCycleId, onTimerStart, onTimerPause }) => {
   const isWorkSession = selectedCycleId % 2 === 0;
-  // TODO: VERIFY IS WORK SESSION!
+  // TODO: VERIFY THE LINE ABOVE!
 
   const selectedCycle = cycles.find(({ id }) => id === selectedCycleId);
 
   const { pauseTimer, resetTimer, startTimer, timeLeft, isRunning } =
-    useCountdown(selectedCycle);
+    useCountdown({ ...selectedCycle });
+  // I CANT SHOW THE 'TIMELEFT' ON DISPLAY BECAUSE THE LINE ABOVE THIS .
 
   useEffect(() => {
     pauseTimer();
@@ -29,6 +30,9 @@ export const Timer = ({ selectedCycleId, onTimerStart, onTimerPause }) => {
   if (!selectedCycle) {
     return <h3>Select a cycle</h3>;
   }
+
+  console.log(formatTime(timeLeft));
+  console.log(timeLeft);
 
   return (
     <div className='container'>

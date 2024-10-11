@@ -1,8 +1,17 @@
 import { useState } from 'react';
+import { formatTime } from '../components/helpers/formatTime';
 
 export const useCountdown = (seconds) => {
-  const [timeLeft, setTimeLeft] = useState(seconds * 60);
+  console.log('seconds worktime', seconds.workTime);
+  console.log('seconds breaKTime  ', seconds.breakTime);
+  const formattedValue = formatTime(seconds.workTime * 60);
+  console.log('formattedValue: ', formattedValue);
+
+  const [timeLeft, setTimeLeft] = useState(formattedValue);
   const [isRunning, setIsRunning] = useState(false);
+
+  console.log('formattedValue after state: ', formattedValue);
+  console.log(timeLeft);
 
   const handleTimerEnd = (timer) => {
     clearInterval(timer);
